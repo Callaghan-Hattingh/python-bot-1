@@ -26,14 +26,14 @@ def on_open(ws):
 def ws_new_trade_bucket():
     timestamp = int(time() * 1000)
     verb = "GET"
-    path = "/ws/candle"
+    path = "/ws/trade"
     signature = sign_request(timestamp, verb, path)
 
     url = f"wss://api.valr.com{path}"
     headers = get_headers(timestamp, signature)
 
     wsapp = websocket.WebSocketApp(
-        url, header=headers, on_open=on_open, on_message=on_message
+        url, header=headers, on_open=on_open, on_message=on_message, on_error=on_error
     )
     wsapp.run_forever(ping_interval=20)
 
