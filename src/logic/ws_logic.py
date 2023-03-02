@@ -1,22 +1,27 @@
 import json
-from datetime import datetime
+from src.models import Candle
+from src.adapter.candle import create
+
+from dateutil import parser
 
 
-def trade_sorter(trade):
-    trade = json.loads(trade)
-    if int(trade.get("data").get("bucketPeriodInSeconds")) == 60:
-        assert trade.get("currencyPairSymbol") == trade.get("data").get(
+def trade_sorter(candle):
+    candle = json.loads(candle)
+    if int(candle.get("data").get("bucketPeriodInSeconds")) == 60:
+        assert candle.get("currencyPairSymbol") == candle.get("data").get(
             "currencyPairSymbol"
         )
-        print(trade)
-        print(trade.get("type"))
-        print(trade.get("currencyPairSymbol"))
-        print(trade.get("data").get("bucketPeriodInSeconds"))
-        print(datetime.utcnow())
-        print(trade.get("data").get("startTime"))
-        print(trade.get("data").get("open"))
-        print(trade.get("data").get("high"))
-        print(trade.get("data").get("low"))
-        print(trade.get("data").get("close"))
-        print(trade.get("data").get("volume"))
-        print(trade.get("data").get("quoteVolume"))
+        c: Candle = Candle(
+            candle_type=candle.get("type"),
+            currency_pair=candle.get("currencyPairSymbol"),
+            bucket_period=candle.get("data").get("bucketPeriodInSeconds"),
+            start_time=parser.parse(candle.get("data").get("startTime")),
+            candle_open=candle.get("data").get("open"),
+            candle_high=candle.get("data").get("high"),
+            candle_low=candle.get("data").get("low"),
+            candle_close=candle.get("data").get("close"),
+            volume=candle.get("data").get("volume"),
+            quote_volume=candle.get("data").get("quoteVolume"),
+        )
+        print(c.candle_open)
+        create(c)

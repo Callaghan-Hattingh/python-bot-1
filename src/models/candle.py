@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from sqlalchemy import Column, Enum, Float, Integer
+from sqlalchemy import Column, Enum, Float, Integer, DateTime, text
 from sqlalchemy.sql.sqltypes import TIMESTAMP
 
 from src.db.base import Base
@@ -11,14 +11,15 @@ class Candle(Base):
     __tablename__ = "Candle"
 
     id = Column(Integer, primary_key=True, nullable=False)
-    change_time = Column(TIMESTAMP(timezone=False), nullable=False)
-    trade_type = Column(
-        Enum("NEW_TRADE_BUCKET", "NEW_TRADE", names="trade_type"), nullable=False
+    change_time = Column(
+        DateTime, server_default=text("CURRENT_TIMESTAMP"), nullable=False
     )
+    candle_type = Column(Enum("NEW_TRADE_BUCKET", names="candle_type"), nullable=False)
     currency_pair = Column(
         Enum("BTCZAR", "ETHZAR", "XRPZAR", names="currency_pair"), nullable=False
     )
-    start_time = Column(TIMESTAMP, nullable=False)
+    bucket_period = Column(Integer, nullable=False)
+    start_time = Column(DateTime, nullable=False)
     candle_open = Column(Float, nullable=False)
     candle_high = Column(Float, nullable=False)
     candle_low = Column(Float, nullable=False)
