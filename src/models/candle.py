@@ -8,7 +8,7 @@ from src.db.base import Base
 
 @dataclass
 class Candle(Base):
-    __tablename__ = "Candle"
+    __tablename__ = "candle"
 
     id = Column(Integer, primary_key=True, nullable=False)
     change_time = Column(

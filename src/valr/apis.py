@@ -13,11 +13,10 @@ def get_all_open_orders():
     timestamp = int(time.time() * 1000)
     verb = "GET"
     path = "/v1/orders/open"
-    signature = sign_request(timestamp, verb, path)
 
     url = f"{os.getenv('ROOT_URL')}{path}"
     payload = {}
-    headers = get_headers(timestamp, signature)
+    headers = get_headers(timestamp, sign_request(timestamp, verb, path))
 
     response = requests.request("GET", url, headers=headers, data=payload)
     if response.ok:
@@ -74,8 +73,7 @@ def del_order(*, pair: str = "BTCZAR", customer_id: str = None, order_id: str = 
     else:
         raise ValueError("Must provide either customer_id or order_id")
 
-    signature = sign_request(timestamp, verb, path, body=payload)
-    headers = get_headers(timestamp, signature)
+    headers = get_headers(timestamp, sign_request(timestamp, verb, path, body=payload))
     response = requests.request("DELETE", url, headers=headers, data=payload)
     if response.ok:
         return response.json()
@@ -90,8 +88,7 @@ def get_trade_hist(*, pair: str = "BTCZAR", skip: int = 0, limit: int = 1):
 
     url = f"{os.getenv('ROOT_URL')}{path}"
     payload = {}
-    signature = sign_request(timestamp, verb, path)
-    headers = get_headers(timestamp, signature)
+    headers = get_headers(timestamp, sign_request(timestamp, verb, path))
 
     response = requests.request("GET", url, headers=headers, data=payload)
     if response.ok:

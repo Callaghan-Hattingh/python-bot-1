@@ -5,7 +5,7 @@ from src.adapter.candle import create
 from dateutil import parser
 
 
-def trade_sorter(candle):
+def candle_hander(candle):
     candle = json.loads(candle)
     if int(candle.get("data").get("bucketPeriodInSeconds")) == 60:
         assert candle.get("currencyPairSymbol") == candle.get("data").get(
