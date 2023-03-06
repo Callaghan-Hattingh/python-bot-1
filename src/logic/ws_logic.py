@@ -1,5 +1,5 @@
 import json
-from src.models import Candle
+from src.models.candle import Candle
 from src.adapter.candle import create
 
 from dateutil import parser
