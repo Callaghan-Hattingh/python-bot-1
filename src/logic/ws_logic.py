@@ -23,5 +23,9 @@ def candle_hander(candle):
             volume=candle.get("data").get("volume"),
             quote_volume=candle.get("data").get("quoteVolume"),
         )
-        print(c.candle_open)
         create(c)
+        candle_controller(c)
+
+
+def candle_controller(candle: Candle) -> None:
+    print(candle.candle_open)
