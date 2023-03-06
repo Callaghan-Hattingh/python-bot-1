@@ -8,14 +8,16 @@ AGGREGATED_ORDERBOOK_UPDATE = {
     ],
 }
 # When subscribed to this event for a given currency pair,
-# the client receives the top 20 bids and asks from the order book for that currency pair.
+# the client receives the top 20 bids and asks from the order book for that
+# currency pair.
 
 MARKET_SUMMARY_UPDATE = {
     "type": "SUBSCRIBE",
     "subscriptions": [{"event": "MARKET_SUMMARY_UPDATE", "pairs": ["BTCZAR"]}],
 }
 # When subscribed to this event for a given currency pair,
-# the client receives a candle feed with the latest market summary for that currency pair.
+# the client receives a candle feed with the latest market summary for that
+# currency pair.
 
 NEW_TRADE_BUCKET = {
     "type": "SUBSCRIBE",
@@ -29,6 +31,7 @@ NEW_TRADE = {
     "subscriptions": [{"event": "NEW_TRADE", "pairs": ["BTCZAR"]}],
 }
 # When subscribed to this event for a given currency pair,
-# the client receives candle feeds with the latest trades that are executed for that currency pair.
+# the client receives candle feeds with the latest trades that are executed for that
+# currency pair.
 
 PING = {"type": "PING"}

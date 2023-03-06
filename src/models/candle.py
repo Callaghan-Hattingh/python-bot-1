@@ -1,7 +1,6 @@
 from dataclasses import dataclass
 
 from sqlalchemy import Column, Enum, Float, Integer, DateTime, text
-from sqlalchemy.sql.sqltypes import TIMESTAMP
 
 from src.db.base import Base
 

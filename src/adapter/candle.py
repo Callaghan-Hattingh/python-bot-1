@@ -1,5 +1,5 @@
 from src.db.base import session
-from src.models import Candle
+from src.models.candle import Candle
 
 
 def create(candle: Candle) -> None:
