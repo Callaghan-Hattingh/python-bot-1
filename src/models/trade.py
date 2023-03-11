@@ -10,7 +10,7 @@ class Trade(Base):
     __tablename__ = "trade"
 
     id = Column(Integer, primary_key=True, nullable=False)
-    lot_price = Column(Float, nullable=False, index=True, unique=True)
+    trade_price = Column(Float, nullable=False, index=True, unique=True)
     change_time = Column(
         DateTime, server_default=text("CURRENT_TIMESTAMP"), nullable=False
     )
@@ -26,7 +26,7 @@ class Trade(Base):
     time_in_force = Column(
         Enum("GTC", "FOK", "IOC", names="time_in_force"), nullable=False
     )
-    lot_status = Column(
+    trade_status = Column(
         Enum(
             "buy_passive",
             "buy_active",
@@ -38,3 +38,27 @@ class Trade(Base):
     )
     amount_of_trades = Column(Integer, nullable=False, default=0)
     batchId = Column(Integer, nullable=False, default=-1)
+
+
+@dataclass
+class Side:
+    buy = "BUY"
+    sell = "SELL"
+
+
+@dataclass
+class CurrencyPair:
+    btc = "BTCZAR"
+    eth = "ETHZAR"
+    xrp = "XRPZAR"
+
+
+@dataclass
+class TimeInForce:
+    gtc = "GTC"
+    fok = "FOK"
+    ioc = "IOC"
+
+
+
+
