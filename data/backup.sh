@@ -1,0 +1,1 @@
+sqlite3 db ".backup backup.db"

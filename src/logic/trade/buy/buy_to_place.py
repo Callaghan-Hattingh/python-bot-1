@@ -27,7 +27,6 @@ def batch_buy_active_gen(
         )
         b.valr_id = "placingTrade"
         commit()
-    # print(orders)
     return orders
 
 
