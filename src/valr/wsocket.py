@@ -14,7 +14,7 @@ def on_message(ws, message):
 
 
 def on_error(ws, error):
-    print(f'error: {error}')
+    print(f"error: {error}")
 
 
 def on_close(ws, status_code, msg):

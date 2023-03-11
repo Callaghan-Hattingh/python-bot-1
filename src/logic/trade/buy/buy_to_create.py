@@ -24,7 +24,7 @@ def create_passive_buy_trades(trades_to_create: set[float]) -> None:
             quantity=minimum_quantity_generation(price=q),
             currency_pair=config.currency_pair,
             post_only=config.post_only,
-            customer_order_id=f"{config.c_id}{q}",
+            customer_order_id=f"{config.c_id}{q}".replace(".", "-"),
             time_in_force=TimeInForce.gtc,
             trade_status=TradeStatus.bpass,
         )
