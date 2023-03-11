@@ -5,6 +5,8 @@ from time import time
 from src.valr.subscriptions import NEW_TRADE_BUCKET
 from src.valr.auth import sign_request, get_headers
 from src.logic.ws_logic import candle_hander
+from src.valr.apis import del_all_orders_for_pair
+from src.core import config
 
 
 def on_message(ws, message):
@@ -12,11 +14,12 @@ def on_message(ws, message):
 
 
 def on_error(ws, error):
-    print(error)
+    print(f'error: {error}')
 
 
-def on_close(ws):
-    print("Connection closed")
+def on_close(ws, status_code, msg):
+    resp = del_all_orders_for_pair(pair=config.currency_pair)
+    print(f"Connection closed: {resp}")
 
 
 def on_open(ws):

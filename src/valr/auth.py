@@ -22,15 +22,10 @@ def sign_request(
     body - http request body as a string, optional
     """
     payload = "{}{}{}{}".format(timestamp, verb.upper(), path, body)
-    print(f"'{payload}'")
     message = bytearray(payload, "utf-8")
-    print(message)
-    print(api_key_secret)
     signature = hmac.new(
         bytearray(api_key_secret, "utf-8"), message, digestmod=hashlib.sha512
     ).hexdigest()
-    print(signature)
-    # print(signature.digest())
     return signature
 
 

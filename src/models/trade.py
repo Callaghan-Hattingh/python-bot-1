@@ -60,5 +60,9 @@ class TimeInForce:
     ioc = "IOC"
 
 
-
-
+@dataclass
+class TradeStatus:
+    bpass = "buy_passive"
+    bact = "buy_active"
+    spass = "sell_passive"
+    sact = "sell_active"
