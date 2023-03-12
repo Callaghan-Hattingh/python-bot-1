@@ -7,6 +7,7 @@ from .buy_to_cancel import buy_to_cancel
 from .buy_to_create import create_passive_buy_trades
 from .buy_to_place import buy_to_place
 from .buy_to_complete import buy_to_complete
+from ..utils import filter_trades
 
 
 def buy(*, candle: Candle, open_trades: list[dict]) -> None:
@@ -53,11 +54,3 @@ def read_planned_trades_from_db(*, planned_trades: set[float]) -> list[Trade]:
         trades = read_trades_with_prices(prices=planned_trades)
 
     return trades
-
-
-def filter_trades(*, trades: list[Trade], status: str) -> list[Trade]:
-    filtered = []
-    for q in trades:
-        if q.trade_status == status:
-            filtered.append(q)
-    return filtered
