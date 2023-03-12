@@ -1,44 +1,101 @@
-import requests
-import time
-from src.valr.auth import sign_request, get_headers
-import os
 import json
+import time
+from requests import Response
+
+import requests
+
+from src.core.config import root_url
+from src.valr.auth import sign_request, get_headers
 
 
 class VALRapiError(Exception):
     pass
 
 
-def get_all_open_orders():
+lot_id_error = "Must provide either customer_id or order_id"
+
+
+def generate_request(verb: str, path: str, headers: dict, payload: str) -> Response:
+    url = f"{root_url}{path}"
+    if payload == "":
+        payload = {}
+    return requests.request(verb, url, headers=headers, data=payload)
+
+
+def generate_headers(verb, path, payload) -> dict:
     timestamp = int(time.time() * 1000)
-    verb = "GET"
-    path = "/v1/orders/open"
+    signature = sign_request(timestamp, verb, path, body=payload)
+    return get_headers(timestamp, signature)
 
-    url = f"{os.getenv('ROOT_URL')}{path}"
-    payload = {}
-    headers = get_headers(timestamp, sign_request(timestamp, verb, path))
 
-    response = requests.request("GET", url, headers=headers, data=payload)
+def generic_request(verb: str, path: str, *, payload: str = "") -> dict:
+    headers = generate_headers(verb, path, payload)
+    response = generate_request(verb, path, headers, payload)
     if response.ok:
         return response.json()
     else:
         raise VALRapiError(response.json())
 
 
+def get_all_open_orders() -> dict:
+    verb = "GET"
+    path = "/v1/orders/open"
+    return generic_request(verb, path)
+
+
+def get_trade_hist(*, pair: str, skip: int, limit: int) -> dict:
+    verb = "GET"
+    path = f"/v1/marketdata/{pair}/tradehistory?skip={skip}&limit={limit}"
+    return generic_request(verb, path)
+
+
+def get_order_history_detail(*, customer_id: str = None, order_id: str = None):
+    # get the lot history detail of the last successfully placed lot
+    if customer_id is not None:
+        path = f"/v1/orders/history/detail/customerorderid/{customer_id}"
+    elif order_id is not None:
+        path = f"/v1/orders/history/detail/orderid/{order_id}"
+    else:
+        raise ValueError(lot_id_error)
+    verb = "GET"
+    return generic_request(verb, path)
+
+
+def get_order_history_summary(*, customer_id: str = None, order_id: str = None):
+    # get the lot history summary of the last successfully placed lot
+    if customer_id is not None:
+        path = f"/v1/orders/history/summary/customerorderid/{customer_id}"
+    elif order_id is not None:
+        path = f"/v1/orders/history/summary/orderid/{order_id}"
+    else:
+        raise ValueError(lot_id_error)
+    verb = "GET"
+    return generic_request(verb, path)
+
+
+def get_order_status(*, pair: str, customer_id: str = None, order_id: str = None):
+    # call only directly after placing lot
+    if customer_id is not None:
+        path = f"/v1/orders/{pair}/customerorderid/{customer_id}"
+    elif order_id is not None:
+        path = f"/v1/orders/{pair}/orderid/{order_id}"
+    else:
+        raise ValueError(lot_id_error)
+    verb = "GET"
+    return generic_request(verb, path)
+
+
 def post_limit_order(
     side: str,
     amount: float,
     price: int,
-    customer_id: str = None,
+    customer_id: str,
     *,
-    pair: str = "BTCZAR",
+    pair: str,
     post_type: bool = True,
 ):
-    timestamp = int(time.time() * 1000)
     verb = "POST"
     path = "/v1/orders/limit"
-
-    url = f"{os.getenv('ROOT_URL')}{path}"
     payload = json.dumps(
         {
             "side": side,
@@ -49,117 +106,30 @@ def post_limit_order(
             "customerOrderId": customer_id,
         }
     )
-    signature = sign_request(timestamp, verb, path, body=payload)
-    headers = get_headers(timestamp, signature)
-
-    response = requests.request("POST", url, headers=headers, data=payload)
-    if response.ok:
-        return response.json()
-    else:
-        raise VALRapiError(response.json())
+    return generic_request(verb, path, payload=payload)
 
 
-def del_order(*, pair: str = "BTCZAR", customer_id: str = None, order_id: str = None):
-    timestamp = int(time.time() * 1000)
+def del_order(*, pair: str, customer_id: str = None, order_id: str = None):
     verb = "DELETE"
     path = "/v1/orders/order"
-
-    url = f"{os.getenv('ROOT_URL')}{path}"
 
     if customer_id is not None:
         payload = json.dumps({"customerOrderId": customer_id, "pair": pair})
     elif order_id is not None:
         payload = json.dumps({"orderId": order_id, "pair": pair})
     else:
-        raise ValueError("Must provide either customer_id or order_id")
-
-    headers = get_headers(timestamp, sign_request(timestamp, verb, path, body=payload))
-    response = requests.request("DELETE", url, headers=headers, data=payload)
-    if response.ok:
-        return response.json()
-    else:
-        raise VALRapiError(response.json())
+        raise ValueError(lot_id_error)
+    return generic_request(verb, path, payload=payload)
 
 
-def get_trade_hist(*, pair: str = "BTCZAR", skip: int = 0, limit: int = 1):
-    timestamp = int(time.time() * 1000)
-    verb = "GET"
-    path = f"/v1/marketdata/{pair}/tradehistory?skip={skip}&limit={limit}"
-
-    url = f"{os.getenv('ROOT_URL')}{path}"
-    payload = {}
-    headers = get_headers(timestamp, sign_request(timestamp, verb, path))
-
-    response = requests.request("GET", url, headers=headers, data=payload)
-    if response.ok:
-        return response.json()
-    else:
-        raise VALRapiError(response.json())
+def batch_orders(data: list):
+    verb = "POST"
+    path = "/v1/batch/orders"
+    payload = json.dumps({"requests": data})
+    return generic_request(verb, path, payload=payload)
 
 
-def get_order_status(
-    *, pair: str = "BTCZAR", customer_id: str = None, order_id: str = None
-):
-    # call only directly after placing order
-    if customer_id is not None:
-        path = f"/v1/orders/{pair}/customerorderid/{customer_id}"
-    elif order_id is not None:
-        path = f"/v1/orders/{pair}/orderid/{order_id}"
-    else:
-        raise ValueError("Must provide either customer_id or order_id")
-    timestamp = int(time.time() * 1000)
-    verb = "GET"
-    signature = sign_request(timestamp, verb, path)
-    url = f"{os.getenv('ROOT_URL')}{path}"
-    payload = {}
-    headers = get_headers(timestamp, signature)
-
-    response = requests.request("GET", url, headers=headers, data=payload)
-    if response.ok:
-        return response.json()
-    else:
-        raise VALRapiError(response.json())
-
-
-def get_order_history_summary(*, customer_id: str = None, order_id: str = None):
-    # get the order history summary of the last successfully placed order
-    if customer_id is not None:
-        path = f"/v1/orders/history/summary/customerorderid/{customer_id}"
-    elif order_id is not None:
-        path = f"/v1/orders/history/summary/orderid/{order_id}"
-    else:
-        raise ValueError("Must provide either customer_id or order_id")
-    timestamp = int(time.time() * 1000)
-    verb = "GET"
-    signature = sign_request(timestamp, verb, path)
-    url = f"{os.getenv('ROOT_URL')}{path}"
-    payload = {}
-    headers = get_headers(timestamp, signature)
-
-    response = requests.request("GET", url, headers=headers, data=payload)
-    if response.ok:
-        return response.json()
-    else:
-        raise VALRapiError(response.json())
-
-
-def get_order_history_detail(*, customer_id: str = None, order_id: str = None):
-    # get the order history detail of the last successfully placed order
-    if customer_id is not None:
-        path = f"/v1/orders/history/detail/customerorderid/{customer_id}"
-    elif order_id is not None:
-        path = f"/v1/orders/history/detail/orderid/{order_id}"
-    else:
-        raise ValueError("Must provide either customer_id or order_id")
-    timestamp = int(time.time() * 1000)
-    verb = "GET"
-    signature = sign_request(timestamp, verb, path)
-    url = f"{os.getenv('ROOT_URL')}{path}"
-    payload = {}
-    headers = get_headers(timestamp, signature)
-
-    response = requests.request("GET", url, headers=headers, data=payload)
-    if response.ok:
-        return response.json()
-    else:
-        raise VALRapiError(response.json())
+def del_all_orders_for_pair(*, pair: str):
+    verb = "DELETE"
+    path = f"/v1/orders/{pair}"
+    return generic_request(verb, path)
