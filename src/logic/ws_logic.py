@@ -2,6 +2,7 @@ import json
 from src.models.candle import Candle
 from src.adapter.candle import create
 from src.core import config
+from src.logic.trade.utils import open_trades_for_currency_pair
 
 from dateutil import parser
 
@@ -35,4 +36,5 @@ def candle_hander(candle):
 
 def candle_controller(candle: Candle) -> None:
     print(candle.start_time, " ", candle.candle_close)
-    buy(candle=candle)
+    open_trades = open_trades_for_currency_pair()
+    buy(candle=candle, open_trades=open_trades)

@@ -17,6 +17,10 @@ def read_trades_for_status_lower_than_price(
     )
 
 
+def read_trades_for_status(status: str) -> list[Trade] | None:
+    return session.query(Trade).filter(Trade.trade_status == status).all()
+
+
 def create(trade: Trade) -> None:
     session.add(trade)
     session.commit()

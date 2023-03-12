@@ -6,12 +6,13 @@ from src.models.trade import Trade, TradeStatus
 from .buy_to_cancel import buy_to_cancel
 from .buy_to_create import create_passive_buy_trades
 from .buy_to_place import buy_to_place
+from .buy_to_complete import buy_to_complete
 
-# Step 0 -> check for completed buys first
 
-
-# Step 1 -> check if any buy lots should be placed
-def buy(*, candle: Candle) -> None:
+def buy(*, candle: Candle, open_trades: list[dict]) -> None:
+    # Step 0 -> check for completed buys first
+    buy_to_complete(open_trades=open_trades)
+    # Step 1 -> check if any buy lots should be placed
     planned_trades = create_planned_trades(price=candle.candle_close)
     print(planned_trades)
     trades = read_planned_trades_from_db(planned_trades=planned_trades)
