@@ -7,6 +7,7 @@ from src.logic.trade.utils import open_trades_for_currency_pair
 from dateutil import parser
 
 from .trade.buy.buy import buy
+from .trade.sell.sell import sell
 
 
 def candle_hander(candle):
@@ -38,3 +39,4 @@ def candle_controller(candle: Candle) -> None:
     print(candle.start_time, " ", candle.candle_close)
     open_trades = open_trades_for_currency_pair()
     buy(candle=candle, open_trades=open_trades)
+    sell(candle=candle, open_trades=open_trades)

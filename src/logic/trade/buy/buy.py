@@ -11,7 +11,7 @@ from .buy_to_complete import buy_to_complete
 
 def buy(*, candle: Candle, open_trades: list[dict]) -> None:
     # Step 0 -> check for completed buys first
-    buy_to_complete(open_trades=open_trades)
+    buy_to_complete(open_trades=open_trades, candle=candle)
     # Step 1 -> check if any buy lots should be placed
     planned_trades = create_planned_trades(price=candle.candle_close)
     print(planned_trades)
