@@ -1,7 +1,8 @@
+from sqlalchemy import asc
+from sqlalchemy.sql.expression import or_
+
 from src.db.base import session
 from src.models.trade import Trade, TradeStatus
-from sqlalchemy.sql.expression import or_
-from sqlalchemy import asc
 
 
 def read_trades_with_prices(prices: set[float]) -> list[Trade] | None:
@@ -19,8 +20,13 @@ def read_trades_for_status_lower_than_price(
     )
 
 
-def read_trades_for_status(status: str) -> list[Trade] | None:
-    return session.query(Trade).filter(Trade.trade_status == status).all()
+def read_trades_for_status(*, status: str) -> list[Trade] | None:
+    return (
+        session.query(Trade)
+        .filter(Trade.trade_status == status)
+        .order_by(asc(Trade.price))
+        .all()
+    )
 
 
 def read_x_sell_trades_above_y(

@@ -1,7 +1,7 @@
 # check if currency was sold in last candle check with open orders
 from src.adapter.trade import read_trades_for_status
 from src.adapter.utils import commit
-from src.models.trade import TradeStatus, Trade, Side
+from src.models.trade import Side, Trade, TradeStatus
 
 
 def sell_open_trades(*, open_trades) -> list[dict]:
@@ -18,7 +18,7 @@ def determine_sell_trades_completed(
     live_trades = set()
     sold = []
     for q in valr_trades:
-        print(q.get("price"))
+        # print(q.get("price"))
         live_trades.add(float(q.get("price")))
     for w in db_trades:
         if w.price in live_trades:
@@ -49,7 +49,7 @@ def create_buy_passive(*, trade: Trade) -> None:
 def sell_to_complete(*, open_trades: list[dict]) -> None:
     # Step 1 -> get sell active form db and open buy trades from valr
     sell_valr_trades = sell_open_trades(open_trades=open_trades)
-    sell_act_trades = read_trades_for_status(TradeStatus.sact)
+    sell_act_trades = read_trades_for_status(status=TradeStatus.sact)
 
     # Step 2 -> Compare
     sold = determine_sell_trades_completed(

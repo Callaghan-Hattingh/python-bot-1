@@ -3,11 +3,12 @@ from src.adapter.trade import read_trades_with_prices
 from src.core import config
 from src.models.candle import Candle
 from src.models.trade import Trade, TradeStatus
+
+from ..utils import filter_trades
 from .buy_to_cancel import buy_to_cancel
+from .buy_to_complete import buy_to_complete
 from .buy_to_create import create_passive_buy_trades
 from .buy_to_place import buy_to_place
-from .buy_to_complete import buy_to_complete
-from ..utils import filter_trades
 
 
 def buy(*, candle: Candle, open_trades: list[dict]) -> None:

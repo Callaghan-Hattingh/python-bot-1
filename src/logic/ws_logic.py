@@ -1,10 +1,11 @@
 import json
-from src.models.candle import Candle
+
+from dateutil import parser
+
 from src.adapter.candle import create
 from src.core import config
 from src.logic.trade.utils import open_trades_for_currency_pair
-
-from dateutil import parser
+from src.models.candle import Candle
 
 from .trade.buy.buy import buy
 from .trade.sell.sell import sell

@@ -3,9 +3,9 @@ import math
 
 from src.adapter.trade import read_trades_for_status
 from src.adapter.utils import commit
-from src.models.candle import Candle
-from src.models.trade import TradeStatus, Trade, Side
 from src.core import config
+from src.models.candle import Candle
+from src.models.trade import Side, Trade, TradeStatus
 
 
 def buy_open_trades(*, open_trades) -> list[dict]:
@@ -52,7 +52,7 @@ def create_sell_passive(*, trade: Trade, close: float) -> None:
 def buy_to_complete(*, open_trades: list[dict], candle: Candle) -> None:
     # Step 1 -> get buy active form db and open buy trades from valr
     buy_valr_trades = buy_open_trades(open_trades=open_trades)
-    buy_act_trades = read_trades_for_status(TradeStatus.bact)
+    buy_act_trades = read_trades_for_status(status=TradeStatus.bact)
 
     # Step 2 -> Compare
     bought = determine_buy_trades_completed(

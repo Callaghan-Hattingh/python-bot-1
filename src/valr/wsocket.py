@@ -1,12 +1,13 @@
 import json
+from time import time
 
 import websocket
-from time import time
-from src.valr.subscriptions import NEW_TRADE_BUCKET
-from src.valr.auth import sign_request, get_headers
+
+from src.core import config
 from src.logic.ws_logic import candle_hander
 from src.valr.apis import del_all_orders_for_pair
-from src.core import config
+from src.valr.auth import get_headers, sign_request
+from src.valr.subscriptions import NEW_TRADE_BUCKET
 
 
 def on_message(ws, message):

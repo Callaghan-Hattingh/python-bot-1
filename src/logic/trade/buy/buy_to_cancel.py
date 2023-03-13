@@ -2,8 +2,8 @@
 from src.adapter.trade import read_trades_for_status_lower_than_price
 from src.adapter.utils import commit
 from src.core import config
-from src.models.trade import TradeStatus, Trade
 from src.models.enums import OrderTypes
+from src.models.trade import Trade, TradeStatus
 from src.valr.apis import batch_orders
 
 
@@ -42,7 +42,7 @@ def buy_to_cancel(*, planned_trades: set[float]) -> None:
         print(resp)
         for q, w in zip(resp["outcomes"], batch):
             if q.get("accepted"):
-                w.valr_id = "tradeDeleted"
+                w.valr_id = "tradeBuyDeleted"
                 w.trade_status = TradeStatus.bpass
                 w.batchId = resp.get("batchId")
                 commit()
