@@ -19,8 +19,9 @@ def on_error(ws, error):
 
 
 def on_close(ws, status_code, msg):
-    resp = del_all_orders_for_pair(pair=config.currency_pair)
-    print(f"Connection closed: {resp}")
+    # disable auto delete of orders
+    # resp = del_all_orders_for_pair(pair=config.currency_pair)
+    print(f"Connection closed: {msg, status_code}")
 
 
 def on_open(ws):
