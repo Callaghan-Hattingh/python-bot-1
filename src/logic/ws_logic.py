@@ -1,6 +1,7 @@
 import json
 
 from dateutil import parser
+from datetime import datetime
 
 from src.adapter.candle import create
 from src.core import config
@@ -34,7 +35,9 @@ def candle_hander(candle):
 
 
 def candle_controller(candle: Candle) -> None:
+    start = datetime.utcnow()
     print(candle.start_time, " ", candle.candle_close)
     open_trades = open_trades_for_currency_pair()
     buy(candle=candle, open_trades=open_trades)
     sell(candle=candle, open_trades=open_trades)
+    print(f'end: {datetime.utcnow() - start}')

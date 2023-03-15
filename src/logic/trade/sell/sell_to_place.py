@@ -4,6 +4,7 @@ from src.core import config
 from src.models.enums import OrderTypes
 from src.models.trade import Trade, TradeStatus
 from src.valr.apis import batch_orders
+from datetime import datetime
 
 
 def batch_sell_active_gen(
@@ -50,4 +51,5 @@ def sell_to_place(*, trades: list[Trade]) -> None:
                 w.valr_id = q.get("orderId")
                 w.trade_status = TradeStatus.sact
                 w.batchId = resp.get("batchId")
+                w.change_time = datetime.utcnow()
                 commit()

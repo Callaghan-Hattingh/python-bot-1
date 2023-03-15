@@ -2,6 +2,7 @@
 from src.adapter.trade import read_trades_for_status
 from src.adapter.utils import commit
 from src.models.trade import Side, Trade, TradeStatus
+from datetime import datetime
 
 
 def sell_open_trades(*, open_trades) -> list[dict]:
@@ -43,6 +44,8 @@ def create_buy_passive(*, trade: Trade) -> None:
     )
     trade.price = trade.trade_price
     trade.trade_status = TradeStatus.bpass
+    trade.amount_of_trades += 1
+    trade.change_time = datetime.utcnow()
     commit()
 
 

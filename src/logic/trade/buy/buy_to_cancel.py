@@ -5,6 +5,7 @@ from src.core import config
 from src.models.enums import OrderTypes
 from src.models.trade import Trade, TradeStatus
 from src.valr.apis import batch_orders
+from datetime import datetime
 
 
 def batch_buy_passive_gen(
@@ -45,4 +46,5 @@ def buy_to_cancel(*, planned_trades: set[float]) -> None:
                 w.valr_id = "tradeBuyDeleted"
                 w.trade_status = TradeStatus.bpass
                 w.batchId = resp.get("batchId")
+                w.change_time = datetime.utcnow()
                 commit()

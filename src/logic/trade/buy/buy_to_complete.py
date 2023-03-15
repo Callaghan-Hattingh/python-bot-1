@@ -6,6 +6,7 @@ from src.adapter.utils import commit
 from src.core import config
 from src.models.candle import Candle
 from src.models.trade import Side, Trade, TradeStatus
+from datetime import datetime
 
 
 def buy_open_trades(*, open_trades) -> list[dict]:
@@ -46,6 +47,7 @@ def create_sell_passive(*, trade: Trade, close: float) -> None:
     trade.side = Side.sell
     trade.price = calculate_sell_price(price=trade.trade_price, last_traded_at=close)
     trade.trade_status = TradeStatus.spass
+    trade.change_time = datetime.utcnow()
     commit()
 
 
