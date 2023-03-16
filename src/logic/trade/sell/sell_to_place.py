@@ -1,10 +1,11 @@
 # need to place the sell trades on valr and change sell passive to sell active
+from datetime import datetime
+
 from src.adapter.utils import commit
 from src.core import config
 from src.models.enums import OrderTypes
 from src.models.trade import Trade, TradeStatus
 from src.valr.apis import batch_orders
-from datetime import datetime
 
 
 def batch_sell_active_gen(

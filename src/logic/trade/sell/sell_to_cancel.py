@@ -1,12 +1,13 @@
 # cancel all the buy actives below the planned minimum
 # keep ten lowest sell amounts
+from datetime import datetime
+
 from src.adapter.trade import read_trades_for_status
 from src.adapter.utils import commit
 from src.core import config
 from src.models.enums import OrderTypes
 from src.models.trade import Trade, TradeStatus
 from src.valr.apis import batch_orders
-from datetime import datetime
 
 
 def batch_sell_passive_gen(

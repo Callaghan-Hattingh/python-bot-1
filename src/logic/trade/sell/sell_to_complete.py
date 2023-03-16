@@ -1,8 +1,9 @@
 # check if currency was sold in last candle check with open orders
+from datetime import datetime
+
 from src.adapter.trade import read_trades_for_status
 from src.adapter.utils import commit
 from src.models.trade import Side, Trade, TradeStatus
-from datetime import datetime
 
 
 def sell_open_trades(*, open_trades) -> list[dict]:
