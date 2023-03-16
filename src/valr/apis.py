@@ -1,11 +1,11 @@
 import json
 import time
-from requests import Response
 
 import requests
+from requests import Response
 
 from src.core.config import root_url
-from src.valr.auth import sign_request, get_headers
+from src.valr.auth import get_headers, sign_request
 
 
 class VALRapiError(Exception):

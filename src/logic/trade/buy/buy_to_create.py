@@ -1,8 +1,8 @@
 # no api calls required
 
-from src.models.trade import Trade, Side, TimeInForce, TradeStatus
-from src.core import config
 from src.adapter.trade import create
+from src.core import config
+from src.models.trade import Side, TimeInForce, Trade, TradeStatus
 
 
 def minimum_quantity_generation(price: float) -> float:

@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from sqlalchemy import Boolean, Column, Enum, Float, Integer, String, DateTime, text
+from sqlalchemy import Boolean, Column, DateTime, Enum, Float, Integer, String, text
 
 from src.db.base import Base
 
