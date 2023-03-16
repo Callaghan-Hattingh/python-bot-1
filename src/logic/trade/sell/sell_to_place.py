@@ -53,3 +53,5 @@ def sell_to_place(*, trades: list[Trade]) -> None:
                 w.batchId = resp.get("batchId")
                 w.change_time = datetime.utcnow()
                 commit()
+            else:
+                print(f"fail sell act: {w.customer_order_id}")

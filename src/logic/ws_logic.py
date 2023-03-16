@@ -40,4 +40,4 @@ def candle_controller(candle: Candle) -> None:
     open_trades = open_trades_for_currency_pair()
     buy(candle=candle, open_trades=open_trades)
     sell(candle=candle, open_trades=open_trades)
-    print(f'end: {datetime.utcnow() - start}')
+    print(f"end: {datetime.utcnow() - start}")
