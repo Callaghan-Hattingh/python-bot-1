@@ -1,5 +1,6 @@
-from src.valr.wsocket import ws_new_trade_bucket
 import datetime
+
+from src.valr.wsocket import ws_new_trade_bucket
 
 
 def bot():
