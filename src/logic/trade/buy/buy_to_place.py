@@ -1,10 +1,11 @@
 # need to place the buy trades on valr and change buy passive to buy active
+from datetime import datetime
+
 from src.adapter.utils import commit
 from src.core import config
 from src.models.enums import OrderTypes
 from src.models.trade import Trade, TradeStatus
 from src.valr.apis import batch_orders
-from datetime import datetime
 
 
 def batch_buy_active_gen(

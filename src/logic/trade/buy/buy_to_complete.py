@@ -1,12 +1,11 @@
 # check if currency was bought in last candle check with open orders
 import math
+from datetime import datetime
 
 from src.adapter.trade import read_trades_for_status
 from src.adapter.utils import commit
-from src.core import config
 from src.models.candle import Candle
 from src.models.trade import Side, Trade, TradeStatus
-from datetime import datetime
 
 
 def buy_open_trades(*, open_trades) -> list[dict]:

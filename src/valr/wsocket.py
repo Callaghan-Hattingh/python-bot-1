@@ -3,9 +3,7 @@ from time import time
 
 import websocket
 
-from src.core import config
 from src.logic.ws_logic import candle_hander
-from src.valr.apis import del_all_orders_for_pair
 from src.valr.auth import get_headers, sign_request
 from src.valr.subscriptions import NEW_TRADE_BUCKET
 
