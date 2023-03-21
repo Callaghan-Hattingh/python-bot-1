@@ -24,7 +24,7 @@ def read_trades_for_status(*, status: str) -> list[Trade] | None:
     return (
         session.query(Trade)
         .filter(Trade.trade_status == status)
-        .order_by(asc(Trade.price))
+        .order_by(asc(Trade.price))  # noqa
         .all()
     )
 
