@@ -16,7 +16,9 @@ AGGREGATED_ORDERBOOK_UPDATE = {
 
 MARKET_SUMMARY_UPDATE = {
     "type": "SUBSCRIBE",
-    "subscriptions": [{"event": "MARKET_SUMMARY_UPDATE", "pairs": [f"{currency_pair}"]}],
+    "subscriptions": [
+        {"event": "MARKET_SUMMARY_UPDATE", "pairs": [f"{currency_pair}"]}
+    ],
 }
 # When subscribed to this event for a given currency pair,
 # the client receives a candle feed with the latest market summary for that

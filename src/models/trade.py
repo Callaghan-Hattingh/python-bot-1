@@ -1,6 +1,16 @@
 from dataclasses import dataclass
 
-from sqlalchemy import Boolean, Column, DateTime, Enum, Float, Integer, String, text, Computed
+from sqlalchemy import (
+    Boolean,
+    Column,
+    DateTime,
+    Enum,
+    Float,
+    Integer,
+    String,
+    text,
+    Computed,
+)
 from sqlalchemy.ext.hybrid import hybrid_property
 
 from src.db.base import Base
@@ -40,11 +50,6 @@ class Trade(Base):
     amount_of_trades = Column(Integer, nullable=False, default=0)
     batchId = Column(Integer, nullable=False, default=-1)
     value = Column(Float, Computed(price * quantity))  # noqa
-
-    @hybrid_property
-    def mean_hour(self):
-        return None
-
 
 
 @dataclass
