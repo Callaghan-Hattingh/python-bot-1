@@ -9,12 +9,12 @@ A place to add ideas to move this project forwards
     * test the need for logins
 
 ## Multiple currencies 
-- DB per pair
+- ~~DB per pair~~
 - pair as a arg
 - python runtime per pair
 
 ## General improvements
-- status table
+- status table not needed
 - start.sh script
 - alembic VC for db
 - testing
