@@ -6,6 +6,8 @@ from sqlalchemy import pool
 from alembic import context
 
 from src.db.base import Base
+from src.models.trade import Trade
+from src.models.candle import Candle
 from src.core.config import currency_pair
 
 # this is the Alembic Config object, which provides

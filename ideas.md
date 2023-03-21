@@ -18,6 +18,7 @@ A place to add ideas to move this project forwards
 - start.sh script
 - alembic VC for db
 - testing
+- backup db to GCP
 
 ## Variable sell price
 - stand dev to take in to account when trading.
