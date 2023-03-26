@@ -2,7 +2,6 @@ from dataclasses import dataclass
 
 from sqlalchemy import Column, DateTime, Enum, Float, Integer, text
 from sqlalchemy.ext.hybrid import hybrid_property
-from src.adapter.candle import read_avg_candle_close, read_std_dev_candle_close
 
 from src.db.base import Base
 
@@ -30,8 +29,12 @@ class Candle(Base):
 
     @hybrid_property
     def avg(self, period: int) -> float:
+        from src.adapter.candle import read_avg_candle_close
+
         return read_avg_candle_close(period=period)
 
     @hybrid_property
     def std_dev(self, period: int) -> float:
+        from src.adapter.candle import read_std_dev_candle_close
+
         return read_std_dev_candle_close(period=period)

@@ -16,7 +16,7 @@ def sell(*, candle: Candle, open_trades: list[dict]) -> None:
     sell_to_complete(open_trades=open_trades)
 
     planned_trades = read_x_sell_trades_above_y(
-        minimum_price=candle.candle_close, amount_of_trades=config.max_buy_lots
+        minimum_price=candle.candle_close, amount_of_trades=config.max_sell_lots
     )
     # Step 2 -> check for sell active
     sell_to_place(trades=filter_trades(trades=planned_trades, status=TradeStatus.spass))

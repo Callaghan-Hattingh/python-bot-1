@@ -1,8 +1,8 @@
 from sqlalchemy import desc
+from sqlalchemy.sql import func
 
 from src.db.base import session
 from src.models.candle import Candle
-from sqlalchemy.sql import func
 
 
 def create(candle: Candle) -> None:

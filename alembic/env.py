@@ -1,16 +1,14 @@
 from logging.config import fileConfig
 
-from sqlalchemy import engine_from_config
-from sqlalchemy import pool
+from sqlalchemy import engine_from_config, pool
 
 from alembic import context
-
+from src.core.config import currency_pair
 from src.db.base import Base
+from src.models.candle import Candle  # noqa
 
 # imports needed for auto generate to work
 from src.models.trade import Trade  # noqa
-from src.models.candle import Candle  # noqa
-from src.core.config import currency_pair
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

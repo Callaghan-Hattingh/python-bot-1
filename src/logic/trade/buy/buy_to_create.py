@@ -7,10 +7,13 @@ from src.models.trade import Side, TimeInForce, Trade, TradeStatus
 
 def minimum_quantity_generation(price: float) -> float:
     # should return float not string string requirement should be on api adapter
-    if price * float(config.quantity) > 10:
-        return config.quantity
+    if price * float(config.min_base_amount) > config.min_quote_amount:
+        return config.min_base_amount
     else:
-        return round(10.01 / price, 8)
+        return round(
+            (config.min_quote_amount + config.tick_size) / price,
+            config.base_decimal_places,
+        )
 
 
 # Step 1 -> Create passive buy orders as needed.
