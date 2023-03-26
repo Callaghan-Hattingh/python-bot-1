@@ -3,13 +3,13 @@ from dataclasses import dataclass
 from sqlalchemy import (
     Boolean,
     Column,
+    Computed,
     DateTime,
     Enum,
     Float,
     Integer,
     String,
     text,
-    Computed,
 )
 from sqlalchemy.ext.hybrid import hybrid_property
 

@@ -32,9 +32,9 @@ def create_planned_trades(*, price: float) -> set[float]:
     :return: set of buy prices to be placed
     """
     s = set()
-    max_s = ((price - 1) // config.step) * config.step
-    # add a grap of one trade range
-    for _ in range(1, config.max_buy_lots + 1):
+    max_s = ((price - config.tick_size) // config.step) * config.step
+    # add a grap of one trade range(will add again if needed)
+    for _ in range(config.max_buy_lots):
         s.add(max_s - config.step * _)
     return s
 
